@@ -16,10 +16,6 @@ const navigationItems = [
     text: '归档',
   },
   {
-    href: '/friends',
-    text: '友链',
-  },
-  {
     href: '/about',
     text: '关于',
   },

@@ -1,5 +1,4 @@
 import { PostContainer } from '@/components/layout/container/PostContainer';
-import { Comment } from '@/components/ui/comment/Comment';
 import { Heading1, Heading2, Heading3 } from '@/components/ui/heading/Heading';
 import { Image } from '@/components/ui/img/Image';
 import { PostTree } from '@/components/ui/toc/PostTree';
@@ -92,10 +91,6 @@ const PostLayout = ({ params }: { params: { slug: string } }) => {
               </span>
             </Link>
           </div>
-          <Comment
-            path={'/' + params.slug}
-            serverURL={'https://waline.magren.cc'}
-          />
         </div>
         <PostTree />
       </div>
