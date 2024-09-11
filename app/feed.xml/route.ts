@@ -13,12 +13,12 @@ export interface MetaData {
 
 export async function GET() {
   const feed = new RSS({
-    title: `Magren's Blog`,
+    title: `Afe1's Blog`,
     description: '不为繁华易匠心',
-    site_url: 'https://magren.cc',
-    feed_url: 'https://magren.cc/feed.xml',
+    site_url: 'https://afe1-blog.vercel.app/',
+    feed_url: 'https://afe1-blog.vercel.app//feed.xml',
     language: 'en', // 网站语言代码
-    image_url: 'https://magren.cc/avatar.png',
+    image_url: 'https://avatars.githubusercontent.com/u/56245609?v=4',
   });
   const data = allPosts.sort((a, b) =>
     compareDesc(new Date(a.date), new Date(b.date))
@@ -28,8 +28,8 @@ export async function GET() {
     feed.item({
       title: post.title,
       guid: post.slug,
-      url: `https://magren.cc/posts/${post.slug}`,
-      description: `${post.description || ''} <br/> <a href="https://magren.cc/posts/${post.slug}">Continue to read</a>`,
+      url: `https://afe1-blog.vercel.app/posts/${post.slug}`,
+      description: `${post.description || ''} <br/> <a href="https://afe1-blog.vercel.app/posts/${post.slug}">Continue to read</a>`,
       date: new Date(post.date),
     });
   });

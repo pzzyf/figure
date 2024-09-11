@@ -8,7 +8,7 @@ const socialLinks: Array<{
   {
     name: 'icon-[fa-brands--github-square]',
     friendlyName: 'Github',
-    link: 'https://github.com/Magren0321',
+    link: 'https://github.com/pzzyf',
   }
 ];
 
