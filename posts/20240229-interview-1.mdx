@@ -1,0 +1,249 @@
+---
+title: 北京小诚互娱面经
+date: 2024-02-29
+tags:  
+  - 面试
+  - 八股
+slug: 20240229-interview-1
+description: 还是这么讨厌八股（当资料看
+---
+
+# 1.自我介绍  
+
+# 2.html5，css3的新特性  
+  - html5
+    - 语意化：引入语义元素 head,nav,main,footer
+    - 多媒体支撑：内置对音评和视频的支持，audio video
+    - 提供canves元素：使用js可以绘制画布
+    - 本地存储：提供了LocalStorage，SessionStorage
+  - css3
+    - 圆角（Border-radius）
+    - 阴影（Box-shadow）
+    - 渐变（Gradient）
+    - 过渡（Transition）
+    - 动画（Animation）
+    - 多栏布局（Multi-column layout）
+    - 变形（Transform）
+    - 媒体查询（Media Queries
+
+# 3.flex布局常用的属性
+  - 父元素的应用
+    - flex-direction(方向)
+    - flex-wrap(换行)
+    - justify-content(主轴对其方式)
+    - align-item(交叉轴对其方式)
+  - 子元素上的应用
+    - order（项目排列顺序）
+    - flex-graw(项目放大比例)
+      - ![alt text](/img/小诚互娱/image-2.png)
+      - ![alt text](/img/小诚互娱/image-3.png)
+      - ![alt text](/img/小诚互娱/image-4.png)
+    - flex-shrink(项目缩小比例)
+      - ![alt text](/img/小诚互娱/image-5.png)
+      - ![alt text](/img/小诚互娱/image-6.png)
+      - ![alt text](/img/小诚互娱/image-7.png)
+    - flex-basis(在主轴上初始大小)
+    - flex简写:flex-grow flex-shrink flex-basis
+    - align-self(覆盖已有的 align-items 的值)
+      - ![alt text](/img/小诚互娱/image-8.png)
+      - ![alt text](/img/小诚互娱/image-9.png)
+      - ![alt text](/img/小诚互娱/image-10.png)
+
+# 4.如果你只有2个元素，使用flex布局justify-content: space-between,如何实现一行有三个的效果
+  - ![alt text](/img/小诚互娱/image-0.png)
+  - ![alt text](/img/小诚互娱/image-1.png)
+
+# 5.盒模型：标准盒模型/怪异盒模型
+  - 标准盒子模型width = content  box-sizing: content-box
+    - ![alt text](/img/小诚互娱/image-11.png)
+  - 怪异盒模型width = content + padding + border box-sizing:  border-box
+    - ![alt text](/img/小诚互娱/image-12.png)
+
+# 6.数据类型
+  - 基础数据类型：Undefined Null String Number Boolean Symbol BigInt
+  - 引用数据类型：Object Array Function Date RegExp Map Set Promise Symbol
+  - 区别
+    - 基础数据类型
+      - 存放在栈中
+      - 直接存储变量的值
+      - 拷贝创建独立副本
+        - ![alt text](/img/小诚互娱/image-13.png)
+    - 引用数据类型
+      - 存放在堆中
+      - 存储的是对象的引用地址
+      - 拷贝仅拷贝引用地址
+        - ![alt text](/img/小诚互娱/image-14.png)
+
+# 7.数据类型Map Set
+  - Map
+    - Map是一种在 JavaScript 中存储键值对的数据结构。与普通的对象不同，Map的键可以是任何数据类型，包括原始类型和对象。在使用 Map 时，键不会被强制转换为字符串。
+    - Map入参给可迭代对象
+      - ![alt text](/img/小诚互娱/image-15.png)
+    - Map把可迭代对象当成入参是创建一个新的堆内存，改变Map创建的对象属性值不会改变原对象的值
+    - 方法：get set has delete
+
+  - Set
+    - Set提供了一种简单的方法来存储和查询一组值，而无需考虑重复。（是Set类型的对象）
+    - Set把可迭代对象当成入参是创建一个新的堆内存，改变Map创建的对象属性值不会改变原对象的值
+    - 方法：add delete has clear size forEach
+
+# 8.数据类型遍历数组常用的方法
+  - for循环会改变原数组没新的返回值
+    - ![alt text](/img/小诚互娱/image-16.png)
+    - ![alt text](/img/小诚互娱/image-17.png)
+  - for of会改变原数组没新返回值
+    - ![alt text](/img/小诚互娱/image-18.png)
+    - ![alt text](/img/小诚互娱/image-19.png)
+  - forEach不会修改原数组也没有返回值
+    - ![alt text](/img/小诚互娱/image-20.png)
+    - ![alt text](/img/小诚互娱/image-21.png)
+  - map不会修改原数组的值并且放回一个新数组
+    - ![alt text](/img/小诚互娱/image-22.png)
+    - ![alt text](/img/小诚互娱/image-23.png)
+  - filter不会修改原数组的值并且放回一个数组
+    - ![alt text](/img/小诚互娱/image-24.png)
+    - ![alt text](/img/小诚互娱/image-25.png)
+  - reduce累加器不会修改原数组的值并且返回累加值
+    - ![alt text](/img/小诚互娱/image-26.png)
+    - ![alt text](/img/小诚互娱/image-27.png)
+
+# 9.数据类型es6
+  - var let const定义变量能不能改变
+    - const定义基础数据类型不能改变，定义引用数据类型可以改变
+  - 箭头函数this绑定，箭头函数是不是构造函数
+    - 没有自己的this,继承上下文的this
+    - 构造函数是可以通过new关键字创建对象实例，箭头函数没有this绑定，不能作为构造函数
+  - 说一下Promise
+    - Promise就是承诺的意思，制定了一套规范，提供了一种更清晰、更结构化的方式来处理异步编程
+      - ![alt text](/img/小诚互娱/image-28.png)
+      - ![alt text](/img/小诚互娱/image-29.png)
+    - 传入的这个函数, 被称之为 executor(执行体)
+      - resolve: 回调函数, 在成功时, 回调resolve函数
+      - reject: 回调函数, 在失败时, 回调reject函数
+    - Promise 提供两种回调函数
+      - resolve 成功时回调
+      - reject  失败时回调
+        - ![alt text](/img/小诚互娱/image-30.png)
+          - then方法传入的回调函数两个回调函数
+          - 第一个回调函数, 会在Promise执行resolve函数时, 被回调
+          - 第二个回调函数, 会在Promise执行reject函数时, 被回调
+        - ![alt text](/img/小诚互娱/image-31.png)
+          - catch方法传入的回调函数, 会在Promise执行reject函数时, 被回调
+    - Promise的三种状态（pending待定状态，rejected拒绝状态，fulfilled敲定状态）
+      - ![alt text](/img/小诚互娱/image-32.png)
+    - resolve参数 （普通的值或者对象/Promise实例对象/带有then方法的对象）
+      - ![alt text](/img/小诚互娱/image-33.png)
+      - ![alt text](/img/小诚互娱/image-34.png)
+      - ![alt text](/img/小诚互娱/image-35.png)
+    - Promise对象方法（then,catch,finally）
+    - Promise的类方法（resolve,reject,all,allSettled,race,,any）
+      - all(按入参顺序打印，有reject进去catch)
+        - ![alt text](/img/小诚互娱/image-36.png)
+        - ![alt text](/img/小诚互娱/image-37.png)
+      - allSettled所有都打印，标注promise状态和返回值
+        - ![alt text](/img/小诚互娱/image-38.png)
+        - ![alt text](/img/小诚互娱/image-39.png)
+      - race谁最快执行谁，resolve进then，reject进catch
+        - ![alt text](/img/小诚互娱/image-40.png)
+        - ![alt text](/img/小诚互娱/image-41.png)
+      - any 任意一个变为fullfilled就执行那个，全为rejected则reject全执行
+  - 迭代器/生成器
+    - 迭代器有next方法的对象，next返回固定格式
+      - ![alt text](/img/小诚互娱/image-42.png)
+    - 可迭代对象
+      - ![alt text](/img/小诚互娱/image-43.png)
+    - 内置可迭代对象（数组，Map/Set对象，参数arguments）使用names[Symbol.iterator]访问，调用next方法运行
+  - 可迭代对象运用场景
+    - for of语法糖
+    - 展开运算符
+    - 解构
+  - 生成器函数
+    - fuction* yield
+    - 可用控制函数的运行
+    - 调用生成器函数返回生成器对象
+  - async/await
+    - 生成器函数的语法糖
+    - 只使用async和普通函数无区别
+    - 函数返回值为promise对象 await后面表达式
+      - 1.返回一个值
+      - 2.返回thenable
+      - 3.返回Promise
+    - awiat后为什么
+      - 为then里面的代码块
+      - await没执行完后面不执行
+      - 再遇到await再等待他执行完成
+  - Proxy/Reflect
+    - 监听对象操作方法
+      - Object.defineProperty只有get和set两种方法
+        - ![alt text](/img/小诚互娱/image-44.png)
+      - new Proxy有13种捕获器
+        - ![alt text](/img/小诚互娱/image-45.png)
+    - Proxy常用捕获器（get/set/has/deleteProperty）
+      - ![alt text](/img/小诚互娱/image-46.png)
+
+  - Reflect
+    - 取代Object
+    - 入参
+      - Reflect.get(target, key, receiver)
+      - Reflect.set(target, key, newValue, receiver)
+    - receiver全是就是代理对象
+
+# 10.数据类型vue
+  - vue核心组成部分
+    - Compiler模块 template -> render
+    - Reactivity模块 响应式系统 给数据添加响应式
+    - Runtime模块 渲染系统
+      - render -> vnode
+      - 虚拟dom挂载到真实dom上
+      - patch函数，对比vnode，处理新的vnode
+  - 说一下深拷贝和浅拷贝
+    - 浅拷贝仅复制对象的第一层属性，而不会复制嵌套对象的内部引用,因此嵌套对象内部的改变会影响到原始对象。
+      - ![alt text](/img/小诚互娱/image-47.png)
+      - ![alt text](/img/小诚互娱/image-48.png)
+    - 浅拷贝的方法
+      - 扩展运算符
+      - Object.assign()
+    - 深拷贝会递归复制对象及嵌套对象，创造一个全新的数据，不会影响原对象
+      - 手写递归
+      - JSON.parse + JSON.stringify(不包含函数和特殊对象的情况)
+        - ![alt text](/img/小诚互娱/image-49.png)
+        - ![alt text](/img/小诚互娱/image-50.png)
+  - vue的响应式原理
+    - 数据劫持和依赖收集
+  - vue2和vue3响应式原理的区别
+    - vue2用的是Obejct.defineProperty,vue3用的是Proxy和Reflect来监听数据变化
+  - computed
+    - 动态计算实例对象数据
+    - 缓存机制（只要当依赖数据发生变化才执行
+    - 优化
+      - lazy（首次访问才计算）
+      - cache（设置为false禁止缓存
+    - 不能和data里面的数据重名，重名会使data里面数据覆盖computed里面的计算属性
+  - watch
+    - 监听数据变化并执行一些副作用
+    - watch可以同时监听多个数据变化
+  - v-model原理
+    - v-bind+@change
+  - vuex状态管理
+    - state
+    - getter
+    - mutation
+    - action
+    - module
+    - mapState mapGetters
+  - vue-router
+    - 嵌套路由children
+    - query和params
+    - 全局路由守卫，独享路由守卫，组件路由守卫
+      - router.beforeEach,router.aferEach
+      - beforeRouteEnter beforeRouteUpdate beforeRouteLeave
+      - 可以在组件里面编写独享路由守卫
+      - 三个参数to，from，next(),next最重要
+      - 路由的两种模式
+        - hash
+          - 在 URL 中使用 # 符号来表示路由
+          - 地址栏井号斜杠后面的所有参数都是hash值 特点是不随http请求发给服务器
+        - history
+          - 不使用 # 符号，而是直接使用真实的 URL 路径
+          - 部署线上需要后端支持，解决刷新页面404问题
+# 11.git常用的指令
