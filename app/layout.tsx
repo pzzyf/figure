@@ -6,6 +6,14 @@ import './globals.css';
 
 const inter = Inter({ subsets: ['latin'] });
 
+export const metadata: Metadata = {
+  title: "afe1's Blog",
+  description: "Don't go gentle into that good night",
+  icons: {
+    icon: '/favicon.ico',
+  },
+};
+
 
 export default function RootLayout({
   children,

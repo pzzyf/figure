@@ -13,7 +13,7 @@ export function Avatar() {
       <Image
         height={300}
         width={300}
-        src="https://avatars.githubusercontent.com/u/56245609?v=4"
+        src={'/avatar.png'}
         alt="Site Owner Avatar"
         className="aspect-square w-full rounded-full border border-slate-200 dark:border-neutral-800"
       />
