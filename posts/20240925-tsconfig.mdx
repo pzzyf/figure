@@ -36,7 +36,7 @@ description: 使项目结构更合理，提升编译速度
 
 ## 各个路径tsconfig.json
 
-<details>
+<details open>
   <summary>tsconfig.base.json</summary>
 
 ```
@@ -68,7 +68,7 @@ description: 使项目结构更合理，提升编译速度
 ```
 </details>  
 
-<details>
+<details open>
   <summary>tsconfig.node.json</summary>
 
 ```
@@ -93,7 +93,7 @@ description: 使项目结构更合理，提升编译速度
 ```
 </details>
 
-<details>
+<details open>
   <summary>tsconfig.play.json</summary>
 
 ```
@@ -118,7 +118,7 @@ description: 使项目结构更合理，提升编译速度
 ```
 </details>
 
-<details>
+<details open>
   <summary>tsconfig.vite-config.json</summary>
 
 ```
@@ -135,7 +135,7 @@ description: 使项目结构更合理，提升编译速度
 ```
 </details>
 
-<details>
+<details open>
   <summary>tsconfig.vitest.json</summary>
 
 ```
@@ -155,7 +155,7 @@ description: 使项目结构更合理，提升编译速度
 ```
 </details>
 
-<details>
+<details open>
   <summary>tsconfig.web.json</summary>
 
 ```
@@ -215,7 +215,7 @@ description: 使项目结构更合理，提升编译速度
 
 # vue-vben-admin的tsconfig设计
 
-在internal配置好各种场景下特别的ts配置，使用package.json的files字段把所配置的json包括起来。把tsconfig子仓下载到根仓库下，当app子仓这种仓库需要配置时，导入即可
+在internal配置好各种场景下不同的ts配置，使用package.json的files字段把所配置的json包括起来。把tsconfig子仓下载到根仓库下，当app子仓这种仓库需要配置时，导入即可
 
 
 # 参考
