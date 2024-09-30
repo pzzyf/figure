@@ -1,0 +1,61 @@
+---
+title: pnpm+turbo管理monorepo项目
+date: 2024-09-30
+tags:  
+  - 工程化
+  - monorepo
+  - turbo
+slug: 20240930-turborepo
+description: 合理管理monorepo项目
+---
+
+# 需求背景
+
+> Q: pnpm通过workspace功能已经可以实现管理monorepo项目，为什么还需要引入turbo一起来管理
+
+<hr />
+A: pnpm的workspace功能确实可以管理monorepo项目,但turbo提供了一些额外的优势  
+- 更快的构建速度:  
+turbo利用缓存和并行执行来显著加快构建过程。
+它可以智能地跳过已经构建过的部分,只构建发生变化的部分。  
+- 任务编排:  
+turbo提供了强大的任务编排功能,可以定义复杂的任务依赖关系。
+这使得管理大型monorepo项目中的构建、测试和部署流程变得更加容易。
+- 远程缓存:  
+turbo支持远程缓存,可以在团队成员和CI/CD环境之间共享构建结果。
+这进一步提高了整个团队的开发效率。
+- 更好的可视化:  
+turbo提供了构建过程的可视化工具,帮助开发者理解和优化构建流程。
+- 与其他工具的集成:  
+turbo可以与其他常用的开发工具和CI/CD系统无缝集成。  
+
+<hr />
+A: 以上是ai的回答，对我来说有用的并且我用到的就两方面。
+- 构建速度
+- 任务编排
+<hr />
+
+总之,虽然pnpm的workspace功能可以满足基本的monorepo管理需求,但turbo通过提供更高级的功能和优化,可以进一步提高大型项目的开发效率和构建性能。  
+
+# 大纲
+
+本文分为两个部分来介绍如何来实现pnpm+turbo来管理monorepo结构项目
+
+<ol>
+  <li>通过pnpm来管理项目</li>
+  <li>引入turbo，和pnpm一起来管理monorepo项目</li>
+</ol>
+
+# pnpm管理monorepo
+
+首先我们来搭建一个基础的monorepo模板
+```
+  pnpm init
+```
+将生成的package.json的private改为true，type改为module
+
+
+# 参考
+  - <a href="https://juejin.cn/post/7343156956665839651" target="_blank" rel="noopener noreferrer">从零到一使用 turborepo + pnpm 搭建企业级 Monorepo 项目</a>
+  - <a href="https://github.com/pzzyf/monorepo-template" target="_blank" rel="noopener noreferrer">monorepo-template</a>
+
