@@ -54,8 +54,217 @@ A: 以上是ai的回答，对我来说有用的并且我用到的就两方面。
 ```
 将生成的package.json的private改为true，type改为module
 
+<details open>
+  <summary>主仓/package.json</summary>
+
+```
+{
+  "name": "turbo-post",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
+```
+</details>
+
+创建子仓(pnpm init)，并配置pnpm-workspace.yaml,这里拿eslint-config为例（隶属于internal
+此时的目录结构
+```
+.
+ |-internal
+ | |-eslint-config
+ | | |-package.json
+ |-package.json
+ |-pnpm-workspace.yaml
+```
+
+<details open>
+  <summary>pnpm-workspace.yaml</summary>
+
+```
+packages:
+  - 'internal/*'
+```
+</details>
+
+eslint直接使用antfu的eslint-config
+```
+cd internal/eslint-config
+pnpm i -D eslint @antfu/eslint-config
+```
+
+<details open>
+  <summary>eslint-config/package.json</summary>
+
+```
+{
+  "name": "@afe1/eslint-config",
+  "type": "module",
+  "version": "1.0.0",
+  "private": true,
+  "description": "",
+  "author": "",
+  "license": "ISC",
+  "keywords": [],
+  "devDependencies": {
+    "@antfu/eslint-config": "^3.6.2",
+    "eslint": "^9.10.0"
+  }
+}
+
+```
+</details>
+
+创建eslint.config.mjs配置如下
+
+<details open>
+  <summary>eslint-config/package.json</summary>
+
+```
+// eslint.config.mjs
+import antfu from '@antfu/eslint-config'
+
+export default antfu({
+  ignores: [
+    'index.d.ts',
+  ],
+})
+```
+</details>
+
+将”@afe1/eslint-config“添加到主仓/package.json的peerDependencies中
+
+```
+  pnpm i "@afe1/eslint-config@workspace:*" -w  -D
+```
+
+基本工作已完成，接下来我们引入turbo
+
+
+# pnpm+turbo管理monorepo
+
+由于主仓下的eslint.config.mjs,使用的是子仓eslint-config的打包产物，这里我们还需要下载一个打包器这里选择的是unjs的unbild
+
+```
+  pnpm i unbuild turbo -w -D
+```
+
+现在去配置下eslint-config的unbuild配置
+
+<details open>
+  <summary>build.config.ts</summary>
+
+```
+import { defineBuildConfig } from 'unbuild'
+
+export default defineBuildConfig({
+  clean: true,
+  declaration: true,
+  entries: ['eslint.config.mjs'],
+})
+
+```
+</details>
+
+type类型声明
+<details open>
+  <summary>index.d.ts</summary>
+
+```
+import type { Linter } from 'eslint';
+
+declare const defineConfig: Linter.Config;
+export default defineConfig;
+```
+</details>
+
+package.json中配置unbuild打包产物引用路径和turbo里面tasks的脚步配置
+
+<details open>
+  <summary>eslint-config/package.json</summary>
+
+```
+{
+  "name": "@afe1/eslint-config",
+  "type": "module",
+  "version": "1.0.0",
+  "private": true,
+  "description": "",
+  "author": "",
+  "license": "ISC",
+  "keywords": [],
+  "exports": {
+    ".": {
+      "types": "./index.d.ts",
+      "import": "./dist/index.mjs"
+    }
+  },
+  "main": "./dist/index.mjs",
+  "module": "./dist/index.mjs",
+  "types": "./index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "stub": "pnpm unbuild --stub"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "^3.6.2",
+    "eslint": "^9.10.0"
+  }
+}
+
+```
+</details>
+
+根目录配置turbo.json
+根目录package.json配置packageManager
+
+<details open>
+  <summary>turbo.json</summary>
+
+```
+{
+  "$schema": "https://turbo.build/schema.json",
+  "tasks": {
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": ["dist/**", "dist.zip"]
+    },
+    "stub": {
+      "cache": false
+    },
+    "dev": {
+      "persistent": true,
+      "cache": false
+    }
+  }
+}
+
+```
+</details>
+
+执行 turbo run stub 这时候会看到eslint-config会生成dist的打包产物
+
+在主仓的eslint.config.mjs中引用
+
+```
+import defineConfig from "@afe1/eslint-config";
+
+export default defineConfig;
+```
+
+这样就实现了turbo和pnpm一起管理monorepo项目
 
 # 参考
   - <a href="https://juejin.cn/post/7343156956665839651" target="_blank" rel="noopener noreferrer">从零到一使用 turborepo + pnpm 搭建企业级 Monorepo 项目</a>
   - <a href="https://github.com/pzzyf/monorepo-template" target="_blank" rel="noopener noreferrer">monorepo-template</a>
-
+  - <a href="https://github.com/antfu/eslint-config" target="_blank" rel="noopener noreferrer">eslint-config</a>
