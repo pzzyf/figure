@@ -1,0 +1,49 @@
+---
+title: Promise
+date: 2024-10-06
+tags:  
+  - js
+slug: 20241006-promise
+---
+
+# Promise出现解决了什么问题
+
+- 处理异步函数，返回的结果给到的是setTimeout，给不到外层函数需要自己去设计好回调函数
+  ![自己设计的回调函数](/img/promise/1.png)
+
+# Promise的基本使用
+
+Promise是一个类
+
+入参为函数（称为executor，立即执行）  
+resolve 成功时回调  
+reject  失败时回调
+![Promise的基本使用](/img/promise/2.png)
+
+# Promise的三种状态
+
+- pending  
+- fulfilled  
+- rejected
+![Promise的三种状态](/img/promise/3.png)
+
+# Promise的对象方法
+- then  
+- catch  
+- finally 最终状态不论是fulfilled还是rejected，都会执行finally  
+
+可以被多次调用，Promise状态由回调函数的返回值决定
+
+# Promise的类方法
+
+- resolve  
+- reject  
+- all 有一个Promise状态为rejected就会中断，根据数组的顺序了不按照时间返回结果    
+- allSettled 返回所有的状态和结果   
+- race 最快的  
+- any 等到一个fulfilled结果
+![Promise的类方法](/img/promise/4.png)
+
+
+# 参考
+  - <a href="https://github.com/pzzyf/js" target="_blank" rel="noopener noreferrer">js</a>
