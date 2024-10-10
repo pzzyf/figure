@@ -44,6 +44,124 @@ reject  失败时回调
 - any 等到一个fulfilled结果
 ![Promise的类方法](/img/promise/4.png)
 
+# 手写Promise
+
+## Promise的结构设计
+
+Promise类包含一个State和Result  
+构造函数里面的函数私有，class类里面的函数公共
+
+```
+// new Afe1Promise类里面的构造函数立即执行，初始化实例属性
+// 定义resolve，reject函数
+// 执行传入的executor函数,并传入resolve和reject作为参数
+// 执行 executor 函数:
+// 调用resolve,reject函数
+// 构造函数执行完毕，afe1实例创建完成
+
+const PROMISE_STATUS_PENDING = 'pengding'
+const PROMISE_STATUS_FULFILLED = 'fulfilled'
+const PROMISE_STATUS_REJECTED = 'rejected'
+
+class Afe1Promise {
+  constructor(executor){
+    this.status = PROMISE_STATUS_PENDING
+    this.value = undefined
+    this.reason = undefined
+
+    const resolve = (value) => {
+      if (this.status === PROMISE_STATUS_PENDING) {
+        this.status = PROMISE_STATUS_FULFILLED
+        this.value = value
+        console.log("resolve被调用")
+      }
+    }
+
+    const reject = (value) => {
+      if(this.status === PROMISE_STATUS_PENDING){
+        this.status = PROMISE_STATUS_REJECTED
+        this.reason = value
+        console.log('reject被调用');
+      }
+    }
+
+    executor(resolve,reject)
+
+  }
+}
+
+const afe1 = new Afe1Promise((resolve,reject) => {
+  console.log('executor立刻执行');
+  resolve('调用构造函数里面的resolve函数');
+  reject('调用构造函数里面的reject函数')
+})
+
+```
+![Promise的结构设计](/img/promise/5.png)
+
+## Promise-then方法实现
+
+### then方法设计
+实例调用then方法将传入的onFulfilled和onRejected回调函数直接赋值给了this.onFulfilled和this.onRejected，给实例属性添加了两个函数（主任务）  
+在构造函数中，当Promise状态改变时，会调用这些存储的回调函数（微任务）
+
+```
+const PROMISE_STATUS_PENDING = 'pengding'
+const PROMISE_STATUS_FULFILLED = 'fulfilled'
+const PROMISE_STATUS_REJECTED = 'rejected'
+
+class Afe1Promise {
+  constructor(executor){
+    this.status = PROMISE_STATUS_PENDING
+    this.value = undefined
+    this.reason = undefined
+
+    const resolve = (value) => {
+      if (this.status === PROMISE_STATUS_PENDING) {
+        this.status = PROMISE_STATUS_FULFILLED
+        queueMicrotask(() => {
+          this.value = value
+          this.onFulfilled(this.value)
+        })
+      }
+    }
+
+    const reject = (value) => {
+      if(this.status === PROMISE_STATUS_PENDING){
+        this.status = PROMISE_STATUS_REJECTED
+        queueMicrotask(() => {
+          this.reason = value
+          this.onRejected(this.reason)
+        })
+      }
+    }
+
+    executor(resolve,reject)
+
+  }
+
+  then(onFulfilled,onRejected){
+    this.onFulfilled = onFulfilled
+    this.onRejected = onRejected
+  }
+}
+
+const afe1 = new Afe1Promise((resolve,reject) => {
+  console.log('executor立刻执行');
+  resolve('调用构造函数里面的resolve函数');
+})
+
+
+afe1.then((res) => {
+  console.log('then回调函数执行了');
+  console.log(res);
+})
+
+```
+
+![then方法设计](/img/promise/6.png)
+
+### then方法设计优化一
 
 # 参考
   - <a href="https://github.com/pzzyf/js" target="_blank" rel="noopener noreferrer">js</a>
