@@ -52,14 +52,13 @@ Promise类包含一个State和Result
 构造函数里面的函数私有，class类里面的函数公共
 
 ```
-// new Afe1Promise类里面的构造函数立即执行，初始化实例属性
 // 定义resolve，reject函数
 // 执行传入的executor函数,并传入resolve和reject作为参数
 // 执行 executor 函数:
 // 调用resolve,reject函数
 // 构造函数执行完毕，afe1实例创建完成
 
-const PROMISE_STATUS_PENDING = 'pengding'
+const PROMISE_STATUS_PENDING = 'pending'
 const PROMISE_STATUS_FULFILLED = 'fulfilled'
 const PROMISE_STATUS_REJECTED = 'rejected'
 
@@ -77,10 +76,10 @@ class Afe1Promise {
       }
     }
 
-    const reject = (value) => {
+    const reject = (reason) => {
       if(this.status === PROMISE_STATUS_PENDING){
         this.status = PROMISE_STATUS_REJECTED
-        this.reason = value
+        this.reason = reason
         console.log('reject被调用');
       }
     }
@@ -106,7 +105,7 @@ const afe1 = new Afe1Promise((resolve,reject) => {
 在构造函数中，当Promise状态改变时，会调用这些存储的回调函数（微任务）
 
 ```
-const PROMISE_STATUS_PENDING = 'pengding'
+const PROMISE_STATUS_PENDING = 'pending'
 const PROMISE_STATUS_FULFILLED = 'fulfilled'
 const PROMISE_STATUS_REJECTED = 'rejected'
 
@@ -162,6 +161,92 @@ afe1.then((res) => {
 ![then方法设计](/img/promise/6.png)
 
 ### then方法设计优化一
+实现多次then调用，确保status状态只能改变一次
 
-# 参考
-  - <a href="https://github.com/pzzyf/js" target="_blank" rel="noopener noreferrer">js</a>
+```
+const PROMISE_STATUS_PENDING = 'pending'
+const PROMISE_STATUS_FULFILLED = 'fulfilled'
+const PROMISE_STATUS_REJECTED = 'rejected'
+
+class Afe1Promise {
+  constructor(executor){
+    this.status = PROMISE_STATUS_PENDING
+    this.value = undefined
+    this.reason = undefined
+    this.onFulfilledFns = []
+    this.onRejectedFns = []
+
+    const resolve = (value) => {
+      if (this.status === PROMISE_STATUS_PENDING) {
+        queueMicrotask(() => {
+          if (this.status !== PROMISE_STATUS_PENDING) return
+          this.status = PROMISE_STATUS_FULFILLED
+          this.value = value
+          this.onFulfilledFns.forEach((fn) => {
+            fn(this.value)
+          })
+        })
+      }
+    }
+
+    const reject = (reason) => {
+      if(this.status === PROMISE_STATUS_PENDING){
+        queueMicrotask(() => {
+          if (this.status !== PROMISE_STATUS_PENDING) return
+          this.status = PROMISE_STATUS_REJECTED
+          this.reason = reason
+          this.onRejectedFns.forEach((fn) => {
+            fn(this.reason)
+          })
+        })
+      }
+    }
+
+    executor(resolve,reject)
+
+  }
+
+  then(onFulfilled,onRejected){
+    if(this.status === PROMISE_STATUS_FULFILLED && onFulfilled){
+      onFulfilled(this.value)
+    }
+    if(this.status === PROMISE_STATUS_REJECTED && onRejected){
+      onRejected(this.reason)
+    }
+    if(this.status === PROMISE_STATUS_PENDING){
+      this.onFulfilledFns.push(onFulfilled)
+      this.onRejectedFns.push(onRejected)
+    }
+  }
+}
+
+const afe1 = new Afe1Promise((resolve,reject) => {
+  console.log('executor立刻执行');
+  resolve('调用构造函数里面的resolve函数');
+})
+
+
+afe1.then((res) => {
+  console.log('then回调函数执行了1');
+  console.log(res);
+})
+
+afe1.then((res) => {
+  console.log('then回调函数执行了2');
+  console.log(res);
+})
+
+// 在确定Promise状态之后, 再次调用then
+setTimeout(() => {
+  afe1.then(res => {
+    console.log("res3:", res)
+  }, err => {
+    console.log("err3:", err)
+  })
+}, 1000)
+
+```
+![then方法设计优化一](/img/promise/7.png)
+
+### then方法设计优化二
+todo
