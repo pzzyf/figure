@@ -57,7 +57,7 @@ Function.prototype.zyfapply = function(thisArg, argArray){
 # bind
 ```
 // 给所有函数添加一个zyfbind方法
-Function.prototype.zyfcall = function(thisArg, ...argArray){
+Function.prototype.zyfbind = function(thisArg, ...argArray){
   
   // 获取被执行函数
   let fn = this
