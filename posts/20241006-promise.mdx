@@ -8,8 +8,10 @@ slug: 20241006-promise
 
 # Promise出现解决了什么问题
 
-- 处理异步函数，返回的结果给到的是setTimeout，给不到外层函数需要自己去设计好回调函数
-  ![自己设计的回调函数](/img/promise/1.png)
+- Promise通过链式调用和统一错误处理机制，解决了异步编程中的回调嵌套、错误分散和流程控制难题，使代码更易维护。
+![回调地狱](/img/promise/1-1.png)
+![错误处理分散](/img/promise/1-2.png)
+![异步流程控制](/img/promise/1-3.png)
 
 # Promise的基本使用
 
@@ -49,7 +51,6 @@ reject  失败时回调
 ## Promise的结构设计
 
 Promise类包含一个State和Result  
-构造函数里面的函数私有，class类里面的函数公共
 
 ```
 // 定义resolve，reject函数
@@ -84,7 +85,7 @@ class Afe1Promise {
       }
     }
 
-    executor(resolve,reject)
+    executor(resolve,reject) // <- 这里把两个函数传给用户代码
 
   }
 }
@@ -135,7 +136,7 @@ class Afe1Promise {
       }
     }
 
-    executor(resolve,reject)
+    executor(resolve,reject) // <- 这里把两个函数传给用户代码
 
   }
 
@@ -202,7 +203,7 @@ class Afe1Promise {
       }
     }
 
-    executor(resolve,reject)
+    executor(resolve,reject) // <- 这里把两个函数传给用户代码
 
   }
 
