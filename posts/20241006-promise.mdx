@@ -9,8 +9,82 @@ slug: 20241006-promise
 # Promise出现解决了什么问题
 
 - Promise通过链式调用和统一错误处理机制，解决了异步编程中的回调嵌套、错误分散和流程控制难题，使代码更易维护。
+```javascript
+// Before: 回调嵌套
+getData1(function(data1) {
+  getData2(data1, function(data2) {
+    getData3(data2, function(data3) {
+      // 业务逻辑...
+    }, handleError)
+  }, handleError)
+}, handleError)
+
+// After: Promise链式调用
+getData1()
+  .then(data1 => getData2(data1))
+  .then(data2 => getData3(data2))
+  .then(data3 => { /* 业务逻辑 */ })
+  .catch(handleError)
+```
 ![回调地狱](/img/promise/1-1.png)
+```javascript
+// Before: 分散的错误处理
+function handleError(err) {
+  console.log('Error:', err)
+}
+
+ajaxCall1(function(result1) {
+  if (result1.error) handleError(result1.error)
+  else {
+    ajaxCall2(function(result2) {
+      if (result2.error) handleError(result2.error)
+      // ...
+    })
+  }
+})
+
+// After: 统一错误捕获
+ajaxCall1()
+  .then(result1 => ajaxCall2(result1))
+  .then(result2 => { /* ... */ })
+  .catch(err => {
+    console.log('统一错误处理:', err)
+  })
+```
+
 ![错误处理分散](/img/promise/1-2.png)
+
+```javascript
+// Before: 手动维护异步状态
+let count = 0
+const results = []
+
+function checkAllDone() {
+  if (++count === 3) {
+    // 全部完成处理
+  }
+}
+
+ajaxCall1(function(res) {
+  results[0] = res
+  checkAllDone()
+})
+ajaxCall2(function(res) {
+  results[1] = res
+  checkAllDone()
+})
+ajaxCall3(function(res) {
+  results[2] = res
+  checkAllDone()
+})
+
+// After: Promise.all 统一管理
+Promise.all([ajaxCall1(), ajaxCall2(), ajaxCall3()])
+  .then(results => {
+    // 全部完成处理
+  })
+```
+
 ![异步流程控制](/img/promise/1-3.png)
 
 # Promise的基本使用
@@ -47,6 +121,29 @@ reject  失败时回调
 ![Promise的类方法](/img/promise/4.png)
 
 # 手写Promise
+
+```
+主线程
+│
+├─ 创建Promise实例
+│  ├─ 执行constructor
+│  │  ├─ 初始化状态为pending
+│  │  ├─ 定义resolve/reject方法
+│  │  ├─ 立即执行executor函数 ← 关键修正点
+│  │  │  ├─ 用户代码中调用resolve()
+│  │  │  │  ├─ 修改状态为fulfilled
+│  │  │  │  └─ 将回调加入微任务队列
+│  │  └─ constructor执行完毕
+│  └─ 返回实例
+│
+├─ 调用then()方法
+│  └─ 注册onFulfilled回调
+│
+└─ 主线程执行完毕
+   │
+   └─ 执行微任务队列
+      └─ 调用已注册的onFulfilled回调
+```
 
 ## Promise的结构设计
 
